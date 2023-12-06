@@ -1,0 +1,99 @@
+Book
+
+package com.example.GG;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Document(collection = "Book")
+public class Book {
+	@Id 
+	private int id;
+	private String bookName;
+	private String authorName;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getBookName() {
+		return bookName;
+	}
+	public void setBookName(String bookName) {
+		this.bookName = bookName;
+	}
+	public String getAuthorName() {
+		return authorName;
+	}
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
+	}
+
+
+
+
+BookController
+	
+package com.example.GG;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class BookController {
+	@Autowired
+	private BookRepo repo;
+	
+@PostMapping("/AddBook")
+	public String saveBook(@RequestBody Book book){
+		repo.save(book);
+		return "Added Successfully";
+	}
+@GetMapping("/FindAllBooks")
+	public List<Book> getBooks() {
+		return repo.findAll();
+	}
+@DeleteMapping("/{id}")
+	public String deleteBook(@PathVariable int id){
+		repo.deleteById(id);
+		return "Deleted Successfully";
+	}
+
+}
+
+
+
+
+BookRepo
+
+package com.example.GG;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface BookRepo extends MongoRepository<Book, Integer> {
+}
+
+
+applicationproperties
+
+server.port:8989
+spring.data.mongodb.host=localhost
+spring.data.mongodb.port=27017
+spring.data.mongodb.database=Book
+
+

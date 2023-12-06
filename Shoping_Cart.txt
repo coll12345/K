@@ -1,0 +1,157 @@
+App.js
+
+import "./App.css";
+import Header from "./components/Header";
+import ProductList from "./components/ProductList";
+import CartList from "./components/CartList";
+import { useState } from "react";
+function App() {
+const [product, setProduct] = useState([
+{
+url: "https://picsum.photos/id/21/3008/2008 ",
+name: "TRQ White Shoes",
+category: "Shoes",
+seller: "AMZ Seller Ghz",
+price: 1999,
+},
+{
+url: "https://picsum.photos/id/175/2896/1944",
+name: "LOREM Watch Black",
+category: "Watches",
+seller: "Watch Ltd Siyana",
+price: 2599,
+},
+{
+url: "https://picsum.photos/id/180/2400/1600",
+name: "AMZ Laptop 8GB RAM",
+category: "Laptops",
+seller: "Delhi Laptops",
+price: 50000,
+},
+{
+url: "https://picsum.photos/id/111/4400/2656",
+name: "Old Car",category: "Car",
+seller: "Camron LTD",
+price: 40000,
+},
+{
+url: "https://picsum.photos/id/30/367/267",
+name: "Mug",
+category: "Mug",
+seller: "Mug Ltd",
+price: 20,
+},
+{
+url: "https://picsum.photos/id/152/367/267",
+name: "Colourful Flowers",
+category: "Flowers",
+seller: "ABS Ltd",
+price: 100,
+},
+]);
+const [cart, setCart] = useState([]);
+const [showCart, setShowCart] = useState(false);
+const addToCart = (data) => { setCart([...cart, { ...data, quantity: 1 }]); };
+const handleShow = (value) => { setShowCart(value); };
+return (
+    <div>
+    <Header count={cart.length} handleShow={handleShow}></Header>
+    {showCart ? ( <CartList cart={cart}></CartList> ):
+    ( <ProductList product={product} addToCart={addToCart}></ProductList> )}
+    </div>
+    );
+    }
+    export default App;
+
+
+App.css
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  }
+  .shopping-card {
+  justify-content: space-between;
+  background-color: #61dafb;
+  padding: 20px 30px;
+  }
+  .product-item {
+  padding: 20px;
+  }
+
+
+
+Header.js
+
+import '../App.css';
+function Header(props) {
+return (
+    <div className='flex shopping-card'>
+    <div onClick={() => props.handleShow(false)}> Shopping Cart App</div>
+    <div onClick={() => props.handleShow(true)}> Cart <sup> {props.count} </sup></div>
+    </div>
+    );
+    }
+export default Header;
+
+
+
+
+ProductList.js
+
+import '../App.css';
+function ProductList({ product,addToCart }) {
+return (
+<div className='flex'>
+{
+product.map((productItem, productIndex) => {
+return (
+<div style={{ width: '30%' }}>
+<div className='product-item'>
+<img src={productItem.url} width="100%"/>
+<p>{productItem.name} | {productItem.category}</p>
+<p>{productItem.seller}</p>
+<p>Rs.{productItem.price}/-</p>
+<button onClick={() => addToCart(productItem)}> Add To Cart</button>
+</div>
+</div>
+)
+})
+}
+</div>
+)
+}
+export default ProductList;
+
+
+
+
+
+CartList.js
+
+import React from 'react';
+function CartList({ cart, handleQuantityChange }) {
+  const totalPrice = cart.reduce((total, cartItem) => {
+    if (typeof cartItem.price === 'number' && typeof cartItem.quantity === 'number') 
+    { return total + cartItem.price * cartItem.quantity; } 
+      return total; }, 0);
+      return (
+    <div>
+      {cart.map((cartItem) => (
+        <div key={cartItem.id}>
+          <img src={cartItem.url} width={40} alt={cartItem.name} />
+          <span>{cartItem.name}</span>
+          <button onClick={() => handleQuantityChange(cartItem.id, -1)}>-</button>
+          <span>{cartItem.quantity}</span>
+          <button onClick={() => handleQuantityChange(cartItem.id, 1)}>+</button>
+          <span>Rs. {cartItem.price * cartItem.quantity}</span>
+        </div>
+      ))}
+      <p>Total: Rs. {totalPrice}</p>
+    </div>
+  );
+}
+
+export default CartList;
+
+

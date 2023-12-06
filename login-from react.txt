@@ -1,0 +1,105 @@
+App.js
+
+import React, { useState } from 'react';
+import Success from './Success';
+import "./App.css";
+function Login() {
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+const [error, setError] = useState('');
+const [isLoggedIn, setIsLoggedIn] = useState(false);
+const handleLogin = (e) => {
+e.preventDefault();
+if (password.length < 6) {
+setError('Password must be at least 6 characters');
+return;
+}
+const users = [
+{ email: 'dileep@gmail.com', password: 'password1' },
+{ email: 'dd@gmail.com', password: 'password2' }
+];
+const user = users.find((u) => u.email === email && u.password === password);
+if (user) {
+setIsLoggedIn(true);
+setError('');
+} else {
+setError('Invalid password or invalid email');
+}
+};
+return (
+<>
+{isLoggedIn ? (
+<Success />
+) : (
+<form onSubmit={handleLogin}>
+<h2>Login</h2>
+<input type="email" placeholder="Enter your email" value={email} onChange={(e) =>
+setEmail(e.target.value)} required />
+<input type="password" placeholder="Enter your password" value={password}
+onChange={(e) => setPassword(e.target.value)} required />
+<button type="submit">Login</button>
+{error && <p>{error}</p>}
+</form>
+)}
+</>
+);
+}
+export default Login;
+
+
+
+Success.js
+
+import React from 'react'
+function Success() {
+return ( <h1>Logged in</h1> );
+}
+export default Success;
+
+
+App.css
+
+body {
+  font-family: Arial;
+  background-color: #ffffff;
+ 
+}
+
+h2 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+form {
+  max-width: 300px;
+  margin: 0 auto;
+  background: #3e98e2;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+label {
+  font-weight: bold;
+}
+
+
+input[type="text"],
+input[type="password"],
+textarea {
+  width: 66%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+
+input[type="submit"] {
+  width: 40%;
+  color: #e9dada;
+  padding: 10px 20px;
+  background-color: #000000;
+}

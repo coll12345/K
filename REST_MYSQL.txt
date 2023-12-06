@@ -1,0 +1,117 @@
+User
+
+package com.example.Dp;
+
+import jakarta.persistence.Entity;
+
+import jakarta.persistence.*;
+@Entity
+@Table(name="user")
+public class User {
+	@Id
+	private Long id;
+	private String firstname;
+	private String lastname;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getFirstname() {
+		return firstname;
+	}
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+	public String getLastname() {
+		return lastname;
+	}
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+	public User() {
+	}
+}
+
+
+UserRepository
+
+package com.example.Dp;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long>{
+}
+
+
+UserController
+
+package com.example.Dp;
+
+import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+	 @Autowired
+	    private UserRepository Ur;
+
+	    @GetMapping
+	    public List<User> getAllUser() {
+	        return this.Ur.findAll();
+	    }
+
+	    @GetMapping("/{id}")
+	    public User getUserById(@PathVariable(value = "id") long userId) {
+	        return this.Ur.findById(userId).orElse(null);
+	    }
+
+	    @PostMapping
+	    public User createUser(@RequestBody User user) {
+	        return this.Ur.save(user);
+	    }
+
+	    @PutMapping("/{id}")
+	    public User updateUser(@RequestBody User user, @PathVariable("id") long userId) {
+	        User existingUser = this.Ur.findById(userId).orElse(null);
+
+	        if (existingUser != null) {
+	            existingUser.setFirstname(user.getFirstname());
+	            existingUser.setLastname(user.getLastname());
+	            return this.Ur.save(existingUser);
+	        } else {
+	            // Handle the case where the user with the given ID is not found.
+	            return null;
+	        }
+	    }
+
+	    @DeleteMapping("/{id}")
+	    public ResponseEntity<User> deleteUser(@PathVariable("id") long userId) {
+	        User existingUser = this.Ur.findById(userId).orElse(null);
+
+	        if (existingUser != null) {
+	            this.Ur.delete(existingUser);
+	            return ResponseEntity.ok().build();
+	        } else {
+	            // Handle the case where the user with the given ID is not found.
+	            return ResponseEntity.notFound().build();
+	        }
+	    }
+}
+
+
+ApplicationProperties
+
+spring.datasource.url=jdbc:mysql://localhost:3306/d
+spring.datasource.username=root
+spring.datasource.password=gptcpt
+server.port=8090
+spring.jpa.hibernate.ddl-auto=update
+ 

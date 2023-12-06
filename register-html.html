@@ -1,0 +1,38 @@
+<html>
+<head>
+  <title>Registration Form</title>
+  <link rel="stylesheet" href="edit.css">
+  <script src="warning.js"></script>
+</head>
+<body>
+  <h2>Student Registration</h2>
+  <form  method="post" onsubmit="return Validate()" action="register store-html.html">
+    <label><b>Full Name : </b></label><br>
+    <input type="text" name="name" id="1" placeholder="Enter your full name" pattern="[^0-9]*" required><br><br>
+    <label><b> Address : </b></label><br>
+    <input type="text" name="add" id="2" placeholder="Enter your address " required><br><br>
+    <label><b>Birth Date:</b></label><br>
+    <input type="date" id="3" required><br><br>
+    <label> <b>Gender :</b></label><br>
+    <input type="radio" name="gender" value="male" >Male
+    <input type="radio" name="gender" value="female" >Female<br><br>
+    <label><b> Email : </b></label><br>
+    <input type="text" name="email" id="4" placeholder="Enter your email" required><br><br>
+    <label> <b> phone Number : </b></label><br>
+    <input type="text" name="phno" id="5" placeholder="Enter your phone number" required><br><br>
+    <label for="branches">Choose a branch</label>><br>
+    <select id="branches">
+      <option value=""></option>
+      <option value="cs">CS</option>
+      <option value="ce">CE</option>
+      <option value="ee">EE</option>
+      <option value="me">ME</option>
+      <option value="at">AT</option>
+      <option value="ec">EC</option>
+    </select>
+    
+    <hr><br>
+    <input type="submit" value="Submit">
+  </form>
+</body>
+</html>
